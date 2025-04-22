@@ -18,8 +18,13 @@ dependencies = [
     "langchain-anthropic>=0.3.10",
     "langsmith>=0.3.19",
     "together>=1.5.5",
+    "crewai>=0.114.0",
+    "opik>=1.7.9",
 ]
 
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+
+[tool.crewai]
+type="flow"
