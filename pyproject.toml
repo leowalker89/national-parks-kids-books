@@ -1,0 +1,25 @@
+[project]
+name = "national-parks-kids-books"
+version = "0.1.0"
+description = "AI-generated board books about U.S. National Parks for kids"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fireworks-ai>=0.15.12",
+    "huggingface-hub>=0.29.3",
+    "langchain[fireworks]>=0.3.21",
+    "langgraph>=0.3.25",
+    "langchain-groq>=0.0.5",
+    "langchain-core>=0.1.8",
+    "openai>=1.69.0",
+    "pillow>=11.1.0",
+    "pydantic>=2.11.0",
+    "python-dotenv",
+    "langchain-anthropic>=0.3.10",
+    "langsmith>=0.3.19",
+    "together>=1.5.5",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
