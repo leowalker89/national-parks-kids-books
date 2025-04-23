@@ -109,7 +109,6 @@ class BookGenerationFlow(Flow[BookGenerationState]):
         """Uses the BookPlannerAgent to create the story outline, chapters, and page concepts."""
         print("--- Step: Planning Book Structure ---")
 
-       trace.
         planner_agent = Agent(
             role="Children's Book Architect",
             goal=f"Analyze provided research for {self.state.park_name} and devise a complete structural plan for a {self.state.target_page_count}-page toddler's board book (ages 0-5).",
