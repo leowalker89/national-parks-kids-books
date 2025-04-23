@@ -1,0 +1,70 @@
+# src/common/book_content_crew/config/tasks.yaml
+planning_task:
+  description: >
+    Analyze the provided research for {park_name} National Park and devise a
+    complete structural plan for a 10-page toddler's board book (ages 0-5).
+    Specifically:
+    1. Define a simple, engaging narrative arc (beginning, middle, end).
+    2. Structure the story into chapters, assigning a theme, key natural elements,
+       and an exact page count to each chapter. The total pages across all
+       chapters MUST equal 10.
+    3. Generate specific concepts for each of the 10 content pages, detailing
+       the subject and core idea for each page based on the chapter themes and research.
+    Focus solely on natural elements and ensure the plan is suitable for the target age group.
+
+    Research Content:
+    {research}
+  expected_output: >
+    A JSON string representing a dictionary containing the following keys:
+    - 'story_outline': An object with 'narrative_flow' (string) and 'key_themes' (list of strings).
+    - 'chapter_definitions': A list of objects, each with 'chapter_number' (int), 'theme' (string),
+      'key_elements' (list of strings), and 'page_count' (int).
+    - 'page_concepts': A list of 10 objects, each with 'page_number' (int), 'chapter_number' (int),
+      'subject' (string), and 'core_idea' (string).
+  agent: book_planner
+
+cover_design_task:
+  description: >
+    Using the provided research for {park_name} National Park, design the concepts for
+    the front cover (page 0) and back cover (page 11) of the toddler's board book.
+    For each cover:
+    1. Create a detailed illustration description (30+ words) showcasing an iconic,
+       simple, and vibrant natural scene appealing to ages 0-5. Focus on nature,
+       exclude people.
+    2. Write the cover text. CRITICAL: The front cover text MUST be exactly
+       "{park_name} National Park". The back cover text should be a very brief
+       summary (<15 words).
+
+    Research Content:
+    {research}
+  expected_output: >
+    A JSON string representing a dictionary containing two keys:
+    - 'front_cover': An object with 'page_number' (0), 'illustration_description' (string),
+      and 'text' (string - exactly "{park_name} National Park").
+    - 'back_cover': An object with 'page_number' (11), 'illustration_description' (string),
+      and 'text' (string - brief summary).
+  agent: cover_designer
+
+content_writing_task:
+  description: >
+    Using the structural plan and cover designs provided in the context:
+    1. For each of the 10 page concepts provided by the planner, write the page text
+       (extremely concise: max 10-12 simple words suitable for ages 0-5).
+    2. For each page concept, write a detailed illustration description (30+ words)
+       that MUST start exactly with the page's specified 'subject'. Descriptions
+       should guide an illustrator to create vibrant, simple, nature-focused visuals.
+    3. Assemble the final book content by combining the front cover, the 10 generated
+       content pages (in order), and the back cover into a single, complete structure.
+       The final assembled structure should represent the entire book.
+  expected_output: >
+    A complete JSON string representing the final book structure. This JSON should contain:
+    - 'park_name': The name of the park ({park_name}).
+    - 'front_cover': The front cover object from the cover_design_task.
+    - 'pages': A list of 10 page objects, each containing 'page_number', 'text', and 'illustration_description'.
+    - 'back_cover': The back cover object from the cover_design_task.
+    This JSON will be saved directly to the output file.
+  agent: content_writer
+  context:
+    - planning_task
+    - cover_design_task
+  output_file: parks/{park_name_lowercase}/content/book.json
